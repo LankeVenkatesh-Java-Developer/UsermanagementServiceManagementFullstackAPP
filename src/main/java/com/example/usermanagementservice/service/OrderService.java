@@ -28,6 +28,7 @@ public class OrderService {
         Order order = new Order();
         order.setUser(user);
         order.setStatus("PENDING");
+        order.setNotes(request.getNotes());
         order.setOrderItems(new ArrayList<>());
 
         BigDecimal totalAmount = BigDecimal.ZERO;

@@ -12,4 +12,6 @@ import java.util.List;
 public class OrderRequest {
 
     private List<OrderItemRequest> items;
+
+    private String notes;
 }

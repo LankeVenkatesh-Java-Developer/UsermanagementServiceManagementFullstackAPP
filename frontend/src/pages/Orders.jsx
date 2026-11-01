@@ -9,6 +9,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [productQuantities, setProductQuantities] = useState({});
   const [formData, setFormData] = useState({
     notes: ''
   });
@@ -46,12 +47,18 @@ const Orders = () => {
     }
 
     try {
+      const items = selectedProducts.map(productId => ({
+        productId: productId,
+        quantity: productQuantities[productId] || 1
+      }));
+
       await orderService.createOrder({
-        productIds: selectedProducts,
+        items: items,
         notes: formData.notes
       });
       setShowCreateModal(false);
       setSelectedProducts([]);
+      setProductQuantities({});
       setFormData({ notes: '' });
       fetchOrders();
     } catch (error) {
@@ -212,33 +219,42 @@ const Orders = () => {
                   {products.map((product) => (
                     <div
                       key={product.id}
-                      onClick={() => toggleProductSelection(product.id)}
-                      className={`p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+                      className={`p-4 border-2 rounded-xl transition-all duration-200 ${
                         selectedProducts.includes(product.id)
                           ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 shadow-md'
                           : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-soft'
                       }`}
                     >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                              selectedProducts.includes(product.id)
-                                ? 'border-blue-500 bg-blue-500'
-                                : 'border-gray-300 dark:border-gray-600'
-                            }`}>
-                              {selectedProducts.includes(product.id) && (
-                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
-                              )}
-                            </div>
-                            <h4 className="font-semibold text-gray-900 dark:text-white">{product.name}</h4>
-                          </div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{product.description}</p>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedProducts.includes(product.id)}
+                            onChange={() => toggleProductSelection(product.id)}
+                            className="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                          />
+                          <h4 className="font-semibold text-gray-900 dark:text-white">{product.name}</h4>
                         </div>
                         <span className="text-lg font-bold text-gradient">${product.price.toFixed(2)}</span>
                       </div>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-3">{product.description}</p>
+                      {selectedProducts.includes(product.id) && (
+                        <div className="flex items-center space-x-2">
+                          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</label>
+                          <input
+                            type="number"
+                            min="1"
+                            max={product.stock}
+                            value={productQuantities[product.id] || 1}
+                            onChange={(e) => setProductQuantities({
+                              ...productQuantities,
+                              [product.id]: Math.max(1, Math.min(product.stock, parseInt(e.target.value) || 1))
+                            })}
+                            className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-sm dark:bg-gray-700 dark:text-white"
+                          />
+                          <span className="text-xs text-gray-500 dark:text-gray-400">(Stock: {product.stock})</span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -263,6 +279,7 @@ const Orders = () => {
                   onClick={() => {
                     setShowCreateModal(false);
                     setSelectedProducts([]);
+                    setProductQuantities({});
                     setFormData({ notes: '' });
                   }}
                   className="btn-outline"

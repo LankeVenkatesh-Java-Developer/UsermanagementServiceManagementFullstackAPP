@@ -38,11 +38,11 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Hero */}
         <div className="hidden lg:block animate-slide-up">
-          <div className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-700 rounded-3xl p-12 shadow-2xl text-white relative overflow-hidden">
+          <div className="bg-gradient-to-br from-purple-600 via-purple-700 to-pink-700 rounded-3xl p-8 sm:p-12 shadow-2xl text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
             <div className="relative z-10">
@@ -52,7 +52,7 @@ const Register = () => {
                 </div>
                 <span className="text-3xl font-bold">UserHub</span>
               </div>
-              <h1 className="text-4xl font-bold mb-4 leading-tight">
+              <h1 className="text-3xl sm:text-4xl font-bold mb-4 leading-tight">
                 Join Our Community Today
               </h1>
               <p className="text-lg text-white/80 mb-8 leading-relaxed">

@@ -99,13 +99,13 @@ const Products = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Products</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2">Products</h1>
           <p className="text-gray-500 dark:text-gray-400">Browse our collection of amazing products</p>
         </div>
         {isAdmin && (
           <button
             onClick={() => setShowAddModal(true)}
-            className="btn-primary flex items-center space-x-2"
+            className="btn-primary flex items-center space-x-2 w-full sm:w-auto"
           >
             <Plus className="w-5 h-5" />
             <span>Add Product</span>
@@ -170,7 +170,7 @@ const Products = () => {
 
       {(showAddModal || editingProduct) && (
         <div className="modal-overlay">
-          <div className="modal-content p-8">
+          <div className="modal-content p-6 sm:p-8 max-w-lg w-full mx-4">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}

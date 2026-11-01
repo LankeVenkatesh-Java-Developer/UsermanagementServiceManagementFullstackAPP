@@ -11,7 +11,8 @@ const Products = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    price: ''
+    price: '',
+    stock: ''
   });
   const { user } = useAuth();
   const isAdmin = user?.role === 'ADMIN';
@@ -36,10 +37,11 @@ const Products = () => {
     try {
       await productService.createProduct({
         ...formData,
-        price: parseFloat(formData.price)
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock)
       });
       setShowAddModal(false);
-      setFormData({ name: '', description: '', price: '' });
+      setFormData({ name: '', description: '', price: '', stock: '' });
       fetchProducts();
     } catch (error) {
       console.error('Failed to create product:', error);
@@ -52,10 +54,11 @@ const Products = () => {
     try {
       await productService.updateProduct(editingProduct.id, {
         ...formData,
-        price: parseFloat(formData.price)
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock)
       });
       setEditingProduct(null);
-      setFormData({ name: '', description: '', price: '' });
+      setFormData({ name: '', description: '', price: '', stock: '' });
       fetchProducts();
     } catch (error) {
       console.error('Failed to update product:', error);
@@ -80,7 +83,8 @@ const Products = () => {
     setFormData({
       name: product.name,
       description: product.description,
-      price: product.price
+      price: product.price,
+      stock: product.stock
     });
   };
 
@@ -235,14 +239,29 @@ const Products = () => {
                   />
                 </div>
               </div>
-              
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Stock
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  required
+                  className="input-field"
+                  placeholder="Enter stock quantity"
+                  value={formData.stock}
+                  onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                />
+              </div>
+
               <div className="flex justify-end space-x-3 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddModal(false);
                     setEditingProduct(null);
-                    setFormData({ name: '', description: '', price: '' });
+                    setFormData({ name: '', description: '', price: '', stock: '' });
                   }}
                   className="btn-outline"
                 >
